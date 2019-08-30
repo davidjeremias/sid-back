@@ -1,0 +1,101 @@
+
+.left,
+.right {
+    float: left;
+}
+
+.left {
+    top: 0% !important;
+    background: #0065b7;
+    display: inline-block;
+    white-space: nowrap;
+    width: 50px;
+    transition: width .5s;
+}
+
+.right {
+    background: #fff;
+    width: 350px;
+    transition: width 1s;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 1px;
+}
+
+.left:hover {
+    width: 200px;
+}
+
+.item:hover {
+    color: #fff;
+    background-image: linear-gradient(to right,#005CA9, #54BBAB);
+    font-family: 'Arial black';
+}
+
+.left .fas {
+    margin: 15px;
+    width: 20px;
+    color: #fff;
+}
+
+i.fas {
+    font-size: 17px;
+    vertical-align: middle !important;
+}
+
+.item {
+    height: 50px;
+    overflow: hidden;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.item-texto {
+    margin-top: 1%;
+}
+
+.margem-label{
+    font-size: 13px;
+    color: white;
+}
+
+.margen-icon{
+    margin-left: 15px;
+    font-size: 15px;
+    
+}
+    
+.menu{
+    left: 0;
+    width: 50px;
+    height: 100%;
+}
+
+
+.menu-lateral {
+    background: #0065b7;
+    display: inline-block;
+    white-space: nowrap;
+    width: 200px;
+    transition: width .5s;
+}
+
+.item-principal{
+    height: 50px;
+    overflow: hidden;
+    color: #fff;
+    cursor: pointer;
+}
+
+.menu-padding {
+    padding: 0 !important;
+    top: 0 !important;
+}
+
+@media (max-height: 700px){
+    .scroll {
+        overflow-y: scroll;
+        height: 80%;
+    }
+}

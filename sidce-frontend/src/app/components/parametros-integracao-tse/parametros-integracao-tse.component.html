@@ -1,0 +1,56 @@
+<h3 class="titulo">
+  Alterar parâmetros para integração com o TSE
+</h3>
+
+<div class="ui-g ui-fluid">
+  <div class="ui-g-7">
+      <span class="ui-float-label">
+        <input 
+          id="float-input" 
+          autocomplete="off" 
+          type="text" 
+          pInputText 
+          [(ngModel)]="url"
+          title="Campo para informar o link que a rotina deverá utilizar para ter acesso aos arquivos no site do TSE"
+          required>
+        <label for="float-input">Link para Integração</label>
+      </span>
+  </div>
+  <div style="padding-top: 18px;">
+      <button type="submit" class="btn btn-primary" (click)="verificaLink()">Verificar</button>   
+  </div>
+</div>
+
+<div class="ui-g ui-fluid">
+    <div class="ui-g-2">
+        <span class="ui-float-label">
+          <p-dropdown 
+            [options]="dias" 
+            [style]="{'width': '100%'}" 
+            [(ngModel)]="selectedDias"
+            optionLabel="label"
+            [showClear]="true" 
+            required>
+          </p-dropdown>
+          <label style="font-size: 13px" for="float-input">Informe o dia útil do mês</label>
+        </span>
+    </div>
+  
+    <div class="ui-g-2">
+        <span class="ui-float-label">
+            <p-calendar 
+              [(ngModel)]="hora" 
+              [timeOnly]="true"
+              [stepMinute]="60"
+              [readonlyInput]="true"
+              required
+              title="Informa a hora que a rotina será iniciada">
+            </p-calendar>
+          <label for="float-input">Hora</label>
+        </span>
+    </div>
+    <br>
+    <div style="padding-top: 18px;">
+        <button type="submit" class="btn btn-primary" (click)="salvar()">Salvar</button>   
+    </div>
+</div>

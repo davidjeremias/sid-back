@@ -1,0 +1,119 @@
+<p-messages [closable]="true"></p-messages>
+<div class="w-100">
+  <ng-container *ngIf="!isLoading; else loader">
+    <p-table [value]="lista" *ngIf="lista.length > 0; else nadaExibido">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 12%;">Operador</th>
+          <th style="width: 12%;">Código</th>
+          <th style="width: 17%;">Data e Hora da Inclusão</th>
+          <th style="width: 18%;">Status</th>
+          <th>Origem</th>
+          <th>Ações</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{item?.matriculaResponsavel ? item?.matriculaResponsavel : item?.matricula}}</td>
+          <td>{{item?.codigoSolicitacao ? item?.codigoSolicitacao.codigo : ''}}</td>
+          <td>{{gerarData(item) | date: "dd/MM/yyyy HH:mm:ss"}}</td>
+          <td>{{item?.situacaoSolicitacao.nomeSituacao}}</td>
+          <td><span *ngIf="item?.unidadeDTO">{{ item?.unidadeDTO.siglaUnidade ? item?.unidadeDTO.siglaUnidade :
+              item?.unidadeDTO.nomeUnidade }}</span></td>
+          <td class="left">
+            <!-- Botão de Excluir Afastamento -->
+            <button *ngIf="item.rascunho && exclusaoPermitida" (click)="excluir(item)" class="btn btn-icon btn-danger"
+              title="Excluir Afastamento">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+  
+            <!-- Botão de Editar Afastamento -->
+            <button *ngIf="item.rascunho && alteracaoPermitida" (click)="editar(item)" class="btn btn-icon btn-primary"
+              title="Alterar Afastamento">
+              <i class="fas fa-edit"></i>
+            </button>
+  
+            <!-- Botão de Detalhar Afastamento -->
+            <button (click)="detalhar(item)" class="btn btn-icon btn-primary" title="Detalhar Afastamento">
+              <i class="fas fa-search"></i>
+            </button>
+  
+            <button *ngIf="(item.situacaoSolicitacao.nomeSituacao == 'Gerado' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Transmitido' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Rejeitado')
+                && item.situacaoArquivo == 'Download'"
+              (click)="downloadArquivosETL(item)" class="btn btn-icon btn-success" title="Download do arquivo">
+              <i class="fas fa-download"></i>
+            </button>
+  
+            <!-- Botão de gerar Item na fila de geração dos 5 arquivos -->
+            <button *ngIf="(item.situacaoSolicitacao.nomeSituacao == 'Gerado' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Transmitido' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Rejeitado')
+                && item.situacaoArquivo == 'Deletado'"
+              (click)="downloadArquivosETL(item)" class="btn btn-icon btn-primary" title="Gerar arquivo">
+              <i class="fas fa-download"></i>
+            </button>
+  
+            <!-- Botão enquanto o Item esta na fila de geração dos 5 arquivos -->
+            <button *ngIf="(item.situacaoSolicitacao.nomeSituacao == 'Gerado' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Transmitido' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Rejeitado')
+                && item.situacaoArquivo == 'Fila'"
+              (click)="visualizaFilaArquivo()" class="btn btn-icon btn-warning" title="Em fila para geração">
+              <i class="fas fa-download"></i>
+            </button>
+  
+            <!-- Detalhamento dos arquivos -->
+            <button *ngIf="(item.situacaoSolicitacao.nomeSituacao == 'Gerado' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Transmitido' 
+                || item.situacaoSolicitacao.nomeSituacao == 'Rejeitado')"
+              class="btn btn-icon btn-primary" title="Visualizar Arquivos" (click)="visualizarCincoArquivos(item)">
+              <i class="fas fa-th-list"></i>
+            </button>
+  
+            <!-- Botão de ações do SIMBA Gerado-->
+            <gar-dropdown-button *ngIf="item.situacaoSolicitacao.nomeSituacao == 'Gerado'" (mouseenter)="solicitacao = item"
+              [itens]="acoesSimbaGerado" [title]="'Ações SIMBA'" [label]="labelSimba"></gar-dropdown-button>
+  
+            <!-- Botão de ações do SIMBA Outros-->
+            <gar-dropdown-button *ngIf="item.situacaoSolicitacao.nomeSituacao == 'Transmitido' 
+              || item.situacaoSolicitacao.nomeSituacao == 'Rejeitado'"
+              (mouseenter)="solicitacao = item" [itens]="acoesSimbaOutros" [title]="'Ações SIMBA'" [label]="labelSimba"></gar-dropdown-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <div [ngStyle]="getDisplay()">
+    <p-paginator [rows]="10" [totalRecords]="totalRecords" (onPageChange)="paginar($event)"></p-paginator>
+  </div>
+</div>
+
+<p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+<p-dialog [modal]="true" dismissableMask="true" [(visible)]="isDetalhando">
+  <app-detalhar-afastamento [isEleitoral]="isEleitoral" [solicitacao]="detalhando"></app-detalhar-afastamento>
+</p-dialog>
+
+<p-dialog [modal]="true" dismissableMask="false" [(visible)]="isSimbaVisivel">
+  <app-retorno-simba *ngIf="isSimbaVisivel; else elseExclusao" [processo]="simbaVisivel" (fechar)="lidarComRetornoSimba($event)" [recebeAcao]="acaoSimba"
+    [afastamento]="afastamento"></app-retorno-simba>
+    <ng-template #elseExclusao>
+      <app-retorno-simba [processo]="simbaVisivel" (fechar)="lidarComRetornoSimba($event)" [recebeAcao]="acaoSimba"
+        [afastamento]="afastamento"></app-retorno-simba>
+    </ng-template>
+</p-dialog>
+
+<ng-template #loader>
+  <div class="w-100 d-flex justify-content-center">
+    <img src="../../assets/images/loading.gif">
+  </div>
+</ng-template>
+
+<ng-template #nadaExibido>
+  <div class="px-1 py-1" *ngIf="lista?.length == 0 && !isLoading">
+    <hr>
+    <h4 class="text-center t-unfocus">Nada a ser exibido</h4>
+  </div>
+</ng-template>

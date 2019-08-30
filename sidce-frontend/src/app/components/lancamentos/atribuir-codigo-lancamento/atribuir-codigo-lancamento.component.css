@@ -1,0 +1,11 @@
+th, td {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.mt-2{
+    margin-top: 2em !important;
+}

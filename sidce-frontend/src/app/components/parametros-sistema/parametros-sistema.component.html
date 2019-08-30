@@ -1,0 +1,11 @@
+<ng-container *ngFor="let categoria of listaCategorias">
+    <h2>{{ categoria.funcionalidade }}</h2>
+    <hr>
+    <ng-container *ngFor="let parametro of listaParametros">
+        <div class="d-flex mb-1 align-items-center" *ngIf="parametro.tipo.id === categoria.id">
+            <p>{{ parametro.chave }}</p>
+            <textarea [(ngModel)]="parametro.valor"></textarea>
+            <button (click)="salvar(parametro)" class="btn btn-primary">Salvar</button>
+        </div>
+    </ng-container>
+</ng-container>

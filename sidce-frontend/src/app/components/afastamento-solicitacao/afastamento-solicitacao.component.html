@@ -1,0 +1,183 @@
+<h3 class="titulo">
+  {{ isAlteracao ? 'Alterar' : 'Incluir'}}
+  {{ isAfastamento ? '' : 'Solicitação de'}} Afastamento - Contas
+  {{ isEleitoral ? 'Eleitorais' : 'Gerais'}}
+</h3>
+
+<div class="p-sticky">
+  <p-messages [(value)]="msgs"></p-messages>
+</div>
+
+<div *ngIf="dtHrCadastro && situacao" class="d-flex justify-content-between text-center align-items-center">
+  <div style="margin: 0 5em 1em 0;">
+    <h4 class="title t-primary">{{isAfastamento ? 'Operador' : 'Solicitante'}}</h4>
+    <h2 class="title">{{ globals.matricula }}</h2>
+  </div>
+  <div style="margin: 0 5em 1em 0;">
+    <h4 class="title t-primary">Inclusão</h4>
+    <h2 class="title">{{ dtHrCadastro | date: "dd/MM/yyyy" }}</h2>
+    <h3 class="title">{{ dtHrCadastro | date: "HH:mm:ss" }}</h3>
+  </div>
+  <div>
+    <h4 class="title t-primary">{{isAfastamento ? 'Status do Afastamento' : 'Status da Solicitação'}}</h4>
+    <h2 class="title">{{ situacao.nomeSituacao }}</h2>
+  </div>
+  <div *ngIf="codigoSolicitacao">
+    <h4 class="title t-primary">Código</h4>
+    <h2 class="title">{{ codigoSolicitacao.codigo }}</h2>
+  </div>
+  <!-- <hr> -->
+</div>
+
+<!-- Label ou Toogle de CPF/CNPJ -->
+<h5 *ngIf="isEleitoral; else toogleCpfCnpj">CNPJ</h5>
+<ng-template #toogleCpfCnpj>
+  <div class="mb-1">
+    <p>Selecione o tipo de consulta de dados bancários:</p>
+    <p-radioButton name="cpfcnpj" (click)="valuePesquisa = ''" label="CPF" value="cpf" [(ngModel)]="cpfCnpj" class="mr-1"></p-radioButton>
+    <p-radioButton name="cpfcnpj" (click)="valuePesquisa = ''" label="CNPJ" value="cnpj" [(ngModel)]="cpfCnpj"></p-radioButton>
+  </div>
+</ng-template>
+
+<!-- Campos de Pesquisa de CPF/CNPJ -->
+<div class="mb-1">
+  <ng-container>
+    <p-inputMask *ngIf="isEleitoral || cpfCnpj === 'cnpj'" [(ngModel)]="valuePesquisa" name="cnpj" mask="99.999.999/9999-99"
+      unmask="true"></p-inputMask>
+    <p-inputMask *ngIf="!isEleitoral && cpfCnpj === 'cpf'" [(ngModel)]="valuePesquisa" name="cpf" mask="999.999.999-99"
+      unmask="true"></p-inputMask>
+  </ng-container>
+  <button type="button" class="btn inline-input btn-primary" (click)="carregarContas(valuePesquisa)"><i class="fas fa-search"></i></button>
+</div>
+
+<!-- Nome ou razão social relacionado ao cpf/cnpj informado -->
+<h4 style="margin-bottom: 10px;" *ngIf="isNome">Nome: {{nomeResponsavel}}</h4>
+<h4 style="margin-bottom: 10px;" *ngIf="isRazao">Razão social: {{nomeResponsavel}}</h4>
+
+<!-- Tabelas de dados para exibir contas -->
+<p>Selecione a(s) conta(s)</p>
+<p-table class="mb-1" [value]="lista1" [(selection)]="lista1Select" dataKey="id">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3em">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th>{{ isEleitoral ? 'CNPJ' : 'CPF/CNPJ'}}</th>
+      <th>Agência</th>
+      <th>Operação</th>
+      <th>Conta-Dv</th>
+      <th>Data de Abertura</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr [pSelectableRow]="item">
+      <td>
+        <p-tableCheckbox [value]="item"></p-tableCheckbox>
+      </td>
+      <td>{{ item.cpfCNPJ }}</td>
+      <td>{{ item.agencia }}</td>
+      <td>{{ item.operacao }}</td>
+      <td>{{ item.conta }}-{{item.digitoConta}}</td>
+      <td>{{ item.dataAbertura | date: "dd/MM/yyyy" }}</td>
+      <td class="left">{{ item.situacao }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<div class="px-1 py-1" *ngIf="lista1.length <= 0">
+  <h4 class="text-center t-unfocus">Nada a ser exibido</h4>
+  <hr>
+</div>
+<!-- Ações para primeira tabela -->
+<div class="text-right mt-1 mb-3">
+  <h5 class="mb-1">Para Todos os Selecionados:</h5>
+  <div class="d-flex w-100 align-items-center justify-content-end mt-1 mb-3">
+    <button type="button" class="btn btn-primary" (click)="adicionarSelecionados()" [disabled]="lista1Select.length <= 0">Adicionar
+      Selecionado(s)</button>
+  </div>
+</div>
+
+<!-- Tabela de contas selecionadas -->
+<p>Conta(s) selecionada(s)*</p>
+<p-table class="mb-1" [value]="lista2" [(selection)]="lista2Select" dataKey="id">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3em">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th style="width: 12em">{{ isEleitoral ? 'CNPJ' : 'CPF/CNPJ'}}</th>
+      <th style="width: 5em">Agência</th>
+      <th style="width: 6em">Operação</th>
+      <th style="width: 8em">Conta-Dv</th>
+      <th style="width: 7em">Data de Abertura</th>
+      <th style="width: 18em">Status</th>
+      <th style="width: 26em">Período da Informação</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr [pSelectableRow]="item">
+      <td>
+        <p-tableCheckbox [value]="item"></p-tableCheckbox>
+      </td>
+      <td>{{ item.cpfCNPJ }}</td>
+      <td>{{ item.agencia }}</td>
+      <td>{{ item.operacao }}</td>
+      <td>{{ item.conta }}-{{item.digitoConta}}</td>
+      <td>{{ item.dataAbertura | date: "dd/MM/yyyy" }}</td>
+      <td class="left">{{ item.situacao }}</td>
+      <td>
+        <p-calendar [(ngModel)]="item.periodo" [maxDate]="dataAtual" dateFormat="dd/mm/yy" styleClass="w-100"
+          inputStyleClass="w-100" selectionMode="range" [locale]="globals.ptbr" (onClose)="validaPeriodo(item)"
+          [readonlyInput]="true" monthNavigator="true" [yearNavigator]="true" yearRange="1950:{{ano}}"></p-calendar>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div class="px-1 py-1" *ngIf="lista2.length <= 0">
+  <h4 class="text-center t-unfocus">Nada a ser exibido</h4>
+  <hr>
+</div>
+<!-- Ações para segunda tabela -->
+<div class="text-right mt-1 mb-3">
+  <h5 class="mb-1">Para Todos os Selecionados:</h5>
+  <div class="d-flex w-100 align-items-center justify-content-end">
+    <button [disabled]="lista2Select.length <= 0" type="button" class="btn btn-danger" (click)="removerSelecionados()">Remover
+      Conta(s)</button>
+    <button [disabled]="lista2Select.length <= 0" type="button" class="btn btn-primary" (click)="op.toggle($event)">Informar
+      Período</button>
+  </div>
+</div>
+
+<!-- Arquivo de Ofício -->
+<hr>
+<div>
+  <h5 class="mb-1">Incluir Ofício</h5>
+  <p-fileUpload #fupload name="arquivo[]" mode="basic" accept="application/pdf" maxFileSize="10000000" customUpload="true"
+    (onSelect)="validaArquivo($event)" (uploadHandler)="uploadArquivo($event, fupload)" auto="true" styleClass="btn btn-primary mb-1"
+    chooseLabel="Selecionar Arquivo"></p-fileUpload>
+  <div class="d-flex mb-1">
+    <div class="card mx-1 d-flex direction-column align-items-center" *ngIf="arquivo" style="width: fit-content">
+      <span style="font-size: 4em" class="t-unfocus">
+        <i class="fas fa-file-alt"></i>
+      </span>
+      {{arquivo.name}}
+    </div>
+  </div>
+  <button class="btn btn-warn" type="button" (click)="download()" *ngIf="arquivoBlob">Download Oficio Atual</button>
+</div>
+
+<!-- Ações da tela -->
+<hr>
+<div class="d-flex w-100 align-items-center justify-content-end mt-1 mb-3">
+  <button type="button" class="btn btn-warn" (click)="salvar(true)" [disabled]="isSalvando">Salvar Rascunho</button>
+  <button type="button" class="btn btn-primary" (click)="confirmarEnvio()" [disabled]="isSalvando">Enviar</button>
+</div>
+
+<p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+<p-overlayPanel #op>
+  <p-calendar dateFormat="dd/mm/yy" [locale]="globals.ptbr" [readonlyInput]="true" monthNavigator="true" selectionMode="range"
+    [inline]="true" #lote [yearNavigator]="true" yearRange="1950:{{ano}}"></p-calendar>
+  <hr>
+  <button (click)="datasEmLote(lote); op.hide()" class="btn btn-primary">Incluir</button>
+</p-overlayPanel>

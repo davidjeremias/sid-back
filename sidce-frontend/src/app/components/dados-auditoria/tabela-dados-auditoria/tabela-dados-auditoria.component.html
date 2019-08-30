@@ -1,0 +1,28 @@
+<div class="w-100">
+  <p-table [resizableColumns]="true" [value]="lista">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 15%;">Autor do Evento</th>
+        <th>Funcionalidade</th>
+        <th style="width: 20%;">Evento</th>
+        <th style="width: 20%;">Data e Hora do Evento</th>
+        <th style="width: 15%;">Endereço Lógico</th>
+        <!-- <th style="width:19.2%">Ações</th> -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{item?.matricula}}</td>
+        <td>{{item?.funcionalidade}}</td>
+        <td>{{item?.evento}}</td>
+        <td>{{item?.dtHrAuditoria | date: "dd/MM/yyyy HH:mm:ss"}}</td>
+        <td>{{item?.host}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+    [rows]="10"
+    [totalRecords]="totalRecords"
+    (onPageChange)="paginar($event)"
+  ></p-paginator>
+</div>

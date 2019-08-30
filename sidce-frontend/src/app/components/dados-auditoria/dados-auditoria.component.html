@@ -1,0 +1,102 @@
+<h3 class="titulo">Dados de Auditoria</h3>
+
+<form #pesquisaForm="ngForm" class="ui-g ui-fluid">
+    <!-- Autor do Evento -->
+    <span class="ui-g-4">
+        <h5>Matrícula</h5>
+        <p-inputMask
+            [(ngModel)]="matricula"
+            name="matricula"
+            mask="a999999"
+            placeholder="EX: C999999"
+        ></p-inputMask>
+    </span>
+    <span class="ui-g-12"></span>
+    <span class="ui-g-4">
+        <h5>Data do Evento</h5>
+        <p-calendar
+            [(ngModel)]="iniPeriodo"
+            name="iniPeriodo"
+            [locale]="globals.ptbr"
+            dateFormat="dd/mm/yy"
+            placeholder="Início"
+            name="dtRepasse"
+        ></p-calendar>
+    </span>
+    <span class="ui-g-4">
+        <h5 style="opacity: 0">.</h5> <!-- Necessário para manter posicionamento -->
+        <p-calendar
+            [(ngModel)]="fimPeriodo"
+            name="fimPeriodo"
+            [minDate]="iniPeriodo"
+            [locale]="globals.ptbr"
+            dateFormat="dd/mm/yy"
+            placeholder="Fim"
+            name="dtRepasse"
+        ></p-calendar>
+    </span>
+    <div class="d-flex ui-g-12">
+        <span *ngIf="listaFuncionalidades" class="mr-1">
+            <h5>Funcionalidade</h5>
+            <p-dropdown
+                [(ngModel)]="funcionalidade"
+                name="funcionalidade"
+                placeholder="Selecione uma funcionalidade"
+                (onChange)="getEvento($event); verificaFuncionalidade()"
+                [options]="listaFuncionalidades"
+            ></p-dropdown>
+        </span>
+        <span>
+            <h5>Evento</h5>
+            <p-dropdown
+                [(ngModel)]="evento"
+                name="evento"
+                [disabled]="!listaEventos"
+                [options]="listaEventos"
+                placeholder="Selecione um evento"
+            ></p-dropdown>
+        </span>
+    </div>
+    <div>
+        <span *ngIf="isCodigoEleitoral" class="ui-g-12">
+            <h5 style="margin-bottom: 0.2em;">Código</h5>
+            <p-inputMask
+                [(ngModel)]="codigoSolicitacao"
+                (focusout)="trataCodigo()"
+                name="codigoSolicitacao"
+                mask="aa999999"
+                unmask="true"
+                placeholder="EX: EL000001"
+            ></p-inputMask>
+        </span>
+        <span *ngIf="isCodigoGeral" class="ui-g-12">
+            <h5 style="margin-bottom: 0.2em;">Código</h5>
+            <p-inputMask
+                [(ngModel)]="codigoSolicitacao"
+                (focusout)="trataCodigo()"
+                name="codigoSolicitacao"
+                mask="aa999999"
+                unmask="true"
+                placeholder="EX: GE000001"
+            ></p-inputMask>
+        </span>
+        <span *ngIf="isCodigoTSE" class="ui-g-12">
+            <h5 style="margin-bottom: 0.2em;">Código</h5>
+            <p-inputMask
+                [(ngModel)]="codigoSolicitacao"
+                (focusout)="trataCodigo()"
+                name="codigoSolicitacao"
+                mask="aaa999999"
+                unmask="true"
+                placeholder="EX: TSE000001"
+            ></p-inputMask>
+        </span>
+    </div>
+</form>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2">
+    <button type="button" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+    <button type="button" class="btn btn-danger" (click)="globals.limpar(pesquisaForm); removerCodigo()">Limpar</button>
+</div>
+
+<app-tabela-dados-auditoria [lista]="lista" [totalRecords]="totalRecords" (paginado)="paginar($event)"></app-tabela-dados-auditoria>

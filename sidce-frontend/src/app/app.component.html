@@ -1,0 +1,24 @@
+<notifications-component></notifications-component>
+
+<div class="main-content d-flex flex-wrap">
+    <app-header class="w-100"></app-header>
+    <div class="d-flex w-100" *ngIf="usuario; else noContent">
+        <app-main-menu></app-main-menu>
+        <div class="container pagina-principal w-100">
+            <main>
+                <div class="content">
+                    <section>
+                        <router-outlet></router-outlet>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+    <app-footer class="w-100"></app-footer>
+</div>
+
+<ng-template #noContent>
+    <div class="container pagina-principal">
+        <h1 class="text-center w-100 mt-5">Usuário não autorizado</h1>
+    </div>
+</ng-template>

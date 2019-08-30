@@ -1,0 +1,22 @@
+<div
+  class="gar-dropdown p-relative"
+  style="display: inline-block"
+  (mouseenter)="visivel = true"
+  (mouseleave)="visivel = false"
+>
+  <button
+    [innerHTML]="label"
+    [title]="title"
+    class="btn btn-icon btn-primary gar-dropdown-toggle"
+    type="button"
+    id="dropDownBtn"
+  ></button>
+  <div
+    class="gar-drop-menu p-absolute arrow_top"
+    *ngIf="visivel"
+  >
+    <a *ngFor="let item of itens" (click)="item.command(item)" [title]="item.title">
+      {{ item.label }}
+    </a>
+  </div>
+</div>

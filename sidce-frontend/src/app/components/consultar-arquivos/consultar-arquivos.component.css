@@ -1,0 +1,70 @@
+th, td {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.botao {
+    padding: 10px;
+    max-width: 95px;
+    min-width: 95px;
+    height: 45px;
+    background-color: #17a2b8;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    border-color: transparent;
+    margin-left: 9%;
+    text-align: center;
+}
+
+.botao:hover {
+    background-color: #F9B000;
+}
+
+.botaoFila {
+    padding: 10px;
+    max-width: 90px;
+    min-width: 90px;
+    height: 45px;
+    background-color: #DF7401;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    border-color: transparent;
+    margin-left: 2%;
+    text-align: center;
+    border-radius: 3px;
+    color: white;
+}
+
+.botaoFila:hover {
+    background-color: #F9B000;
+}
+
+.botaoLimpar {
+    padding: 10px;
+    max-width: 90px;
+    min-width: 90px;
+    height: 45px;
+    background-color: #dc3545;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    border-color: transparent;
+    margin-left: 2%;
+    text-align: center;
+    border-radius: 3px;
+    color: white;
+}
+
+.botaoLimpar:hover {
+    background-color: #F9B000;
+}
+
+.botao-desativado {
+    height: 45px;
+    color: #54BBAB;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    text-align: center;
+}

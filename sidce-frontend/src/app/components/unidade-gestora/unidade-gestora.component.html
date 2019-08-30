@@ -1,0 +1,123 @@
+<h3 class="titulo">
+  Selecionar Unidade Gestora do Sistema
+</h3>
+
+<div class="ui-g ui-fluid tituloForm">
+  <h5>Pesquisar Unidade</h5>
+</div>
+
+<div class="ui-g ui-fluid">
+    <div class="ui-g-2">
+        <span class="ui-float-label">
+            <input 
+              id="float-input" 
+              autocomplete="off" 
+              type="text" 
+              pInputText
+              maxlength="4"
+              pKeyFilter="int"
+              [(ngModel)]="unidade">
+            <label for="float-input">Número da Unidade</label>
+        </span>
+    </div>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2">
+    <br>
+    <div>
+      <button type="submit" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+      <button type="submit" class="btn btn-danger" (click)="limpar()">Limpar</button>
+    </div>
+</div>
+
+<div class="w-100">
+    <p-table [columns]="cols" [value]="listaUnidades" selectionMode="single" [(selection)]="selectedUnidade" dataKey="numeroUnidade" *ngIf="!ldConsulta; else loading">
+        <!--COLUNAS-->
+        <ng-template pTemplate="header" let-columns >
+            <tr *ngIf="listaUnidades">
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <!--LINHAS-->
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+        <!--SELECIONADOS-->
+        <ng-template pTemplate="footer">
+            <tr *ngIf="selectedUnidade">
+                <td colspan="2">
+                    Unidade Selecionada: {{selectedUnidade ? 'Número: '+selectedUnidade.numeroUnidade + ' - ' + 'Descrição: '+selectedUnidade.descricaoUnidade : ''}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-paginator
+      *ngIf="listaUnidades"
+      [rows]="10"
+      [totalRecords]="totalRecords"
+      [alwaysShow]="true"
+      (onPageChange)="paginar($event)"
+    ></p-paginator>
+
+    <ng-template #loading>
+            <div style="margin-left: 45em !important;" class="mt-3 w-100 t-align-center">
+                <img src="../../assets/images/loading.gif">
+            </div>
+    </ng-template>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2 footerTable" *ngIf="!isPrimeiroRegistro && selectedUnidade">
+    <div>
+        <button type="submit" class="btn btn-primary" (click)="salvar(selectedUnidade)">Alterar Unidade</button>
+    </div>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2 footerTable" *ngIf="isPrimeiroRegistro && selectedUnidade">
+    <div>
+        <button type="submit" class="btn btn-primary" (click)="salvar(selectedUnidade)">Selecionar</button>
+    </div>
+</div>
+
+<div class="ui-g ui-fluid tituloForm">
+    <h5>Unidade gestora selecionada</h5>
+</div>
+
+<div class="ui-g ui-fluid">
+    <div class="ui-g-2">
+        <span class="ui-float-label">
+            <input 
+              id="float-input"
+              autocomplete="off"
+              type="text"
+              pInputText
+              maxlength="4"
+              pKeyFilter="int"
+              [(ngModel)]="numeroUnidade"
+              disabled>
+            <label for="float-input">Número da Unidade</label>
+        </span>
+    </div>
+    <div class="ui-g-4">
+        <span class="ui-float-label">
+            <input 
+              id="float-input"
+              autocomplete="off"
+              type="text"
+              pInputText
+              maxlength="4"
+              pKeyFilter="int"
+              [(ngModel)]="descricaoUnidade"
+              disabled>
+            <label for="float-input">Descrição da Unidade</label>
+        </span>
+    </div>
+</div>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>

@@ -1,0 +1,7 @@
+.icone{
+    width: 35px;
+    height: 35px;
+    margin: 0.5em 3em 0 -2em;
+    background-image: url(../../../assets/images/cadeado_branco.png);
+    background-repeat: no-repeat;
+}

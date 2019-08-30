@@ -1,0 +1,70 @@
+<h3 class="titulo">Alterar código do lançamento</h3>
+<div class="ui-g ui-fluid">
+  <div class="ui-g-4 inputMaior">
+    <span class="ui-float-label">
+        <input 
+          id="float-input" 
+          type="text"
+          pInputText
+          disabled
+          [(ngModel)]="descricaoLancamento">
+        <label for="float-input">Descrição do Lançamento</label>
+    </span>
+</div>
+<div class="ui-g-3">
+  <span class="ui-float-label">
+      <input 
+        id="float-input" 
+        type="text"
+        pInputText
+        disabled
+        [(ngModel)]="codigoLancamento">
+      <label for="float-input">Código Atual</label>
+  </span>
+</div>
+</div>
+<div class="ui-g ui-fluid">
+  <div class="ui-g-6">
+    <span class="ui-float-label">
+        <input 
+          id="float-input" 
+          type="text"
+          pInputText
+          disabled
+          [(ngModel)]="naturezaLabel">
+        <label for="float-input">Natureza</label>
+    </span>
+</div>
+<div class="ui-g-5" *ngIf="comboCredito">
+  <span class="ui-float-label">
+    <p-dropdown
+    [options]="codigosCredito" 
+    [style]="{'width': '113%'}" 
+    [(ngModel)]="selectedCodigo"
+    optionLabel="label"
+    placeholder="_____________________"
+    [showClear]="true">
+    </p-dropdown>
+    <label style="font-size: 13px" for="float-input">Código Novo</label>
+  </span>
+</div>
+
+<div class="ui-g-5" *ngIf="comboDebito">
+  <span class="ui-float-label">
+    <p-dropdown
+    [options]="codigosDebito" 
+    [style]="{'width': '113%'}" 
+    [(ngModel)]="selectedCodigo" 
+    optionLabel="label"
+    placeholder="_____________________"
+    [showClear]="true">
+    </p-dropdown>
+    <label style="font-size: 13px" for="float-input">Código Novo</label>
+  </span>
+</div>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2 mt-2">
+  <button type="submit" class="btn btn-primary" (click)="salvar()">Salvar</button>
+  <button type="submit" class="btn btn-danger" (click)="voltar()">Voltar</button>
+</div>

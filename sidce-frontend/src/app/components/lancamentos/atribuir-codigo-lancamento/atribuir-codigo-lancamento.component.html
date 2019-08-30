@@ -1,0 +1,120 @@
+<h3 class="titulo">
+  Atribuir códigos para lançamentos
+</h3>
+
+<div class="ui-g ui-fluid">
+  <div class="ui-g-4">
+    <span class="ui-float-label">
+        <input 
+          id="float-input" 
+          autocomplete="off" 
+          type="text"
+          maxlength="200"
+          pInputText
+          [(ngModel)]="descricaoLancamento">
+        <label for="float-input">Descrição do Lançamento</label>
+    </span>
+</div>
+</div>
+
+<div class="ui-g ui-fluid">
+  <div class="ui-g-2">
+    <span class="ui-float-label">
+      <p-dropdown
+      [options]="naturezas" 
+      [style]="{'width': '100%'}" 
+      [(ngModel)]="selectedNatureza" 
+      optionLabel="label" 
+      [showClear]="true">
+      </p-dropdown>
+      <label style="font-size: 13px" for="float-input">Natureza de Lançamento</label>
+    </span>
+  </div>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2">
+  <br>
+  <div>
+    <button type="submit" class="btn btn-primary" (click)="pesquisaComFiltro()">Filtrar</button>
+  </div>
+</div>
+
+<div class="w-100">
+  <p-table [autoLayout]="true" [value]="listaLancamento" *ngIf="!ldConsulta; else loading">
+      <!--COLUNAS-->
+      <ng-template pTemplate="header">
+          <tr *ngIf="listaLancamento">
+              <th>Descrição do Lançamento</th>
+              <th>Natureza do Lançamento</th>
+              <th>Código</th>
+          </tr>
+      </ng-template>
+      <!--LINHAS-->
+      <ng-template pTemplate="body" let-item>
+          <tr>
+              <td>{{item.descricaoHistorico}}</td>
+              <td>
+                <span *ngIf="item.natureza == 'C'">Crédito</span>
+                <span *ngIf="item.natureza == 'D'">Débito</span>
+              </td>
+              <td class="left">
+                <span *ngIf="item.natureza == 'C'">
+                  <div class="ui-g-5">
+                    <span class="ui-float-label">
+                      <p-dropdown
+                      [options]="codigosCredito" 
+                      [style]="{'width': '200%'}" 
+                      [(ngModel)]="item.codigoLancamento" 
+                      optionLabel="label"
+                      placeholder="_____________________"
+                      [showClear]="true">
+                      </p-dropdown>
+                      <label style="font-size: 13px" for="float-input">Código</label>
+                    </span>
+                  </div>
+                </span>
+                <span *ngIf="item.natureza == 'D'">
+                  <div class="ui-g-5">
+                    <span class="ui-float-label">
+                      <p-dropdown
+                      [options]="codigosDebito" 
+                      [style]="{'width': '200%'}" 
+                      [(ngModel)]="item.codigoLancamento" 
+                      optionLabel="label"
+                      placeholder="_____________________"
+                      [showClear]="true">
+                      </p-dropdown>
+                      <label style="font-size: 13px" for="float-input">Código</label>
+                    </span>
+                  </div>
+                </span>
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+
+  <p-paginator
+    *ngIf="listaLancamento"
+    [rows]="10"
+    [totalRecords]="totalRecords"
+    [alwaysShow]="true"
+    (onPageChange)="paginar($event)"
+  ></p-paginator>
+
+  <ng-template #loading>
+          <div style="margin-left: 45em !important;" class="mt-3 w-100 t-align-center">
+              <img src="../../assets/images/loading.gif">
+          </div>
+  </ng-template>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2 mt-2" *ngIf="listaLancamento">
+  <br>
+  <div>
+    <button type="submit" class="btn btn-primary" (click)="salvar(listaLancamento)">Salvar</button>
+    <button type="submit" class="btn btn-danger" (click)="voltar()">Voltar</button>
+  </div>
+</div>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>

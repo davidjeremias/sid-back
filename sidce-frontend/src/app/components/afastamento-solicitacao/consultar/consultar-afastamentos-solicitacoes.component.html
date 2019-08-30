@@ -1,0 +1,109 @@
+<h3 class="titulo">{{ tituloPagina }}</h3>
+
+<form #pesquisaForm="ngForm" class="ui-g ui-fluid">
+
+  <span class="ui-g-4">
+    <h5>Matrícula</h5>
+    <p-inputMask [(ngModel)]="matricula" name="matricula" mask="a999999" placeholder="EX: C999999"></p-inputMask>
+  </span>
+  <span class="ui-g-2">
+    <h5>Código</h5>
+    <p-inputMask *ngIf="isEleitoral" [(ngModel)]="codigo" (focusout)="trataCodigo()" name="codigo" mask="aa999999" placeholder="EX: EL000001"></p-inputMask>
+    <p-inputMask *ngIf="!isEleitoral" [(ngModel)]="codigo" (focusout)="trataCodigo()" name="codigo" mask="aa999999" placeholder="EX: GE000001"></p-inputMask>
+  </span>
+  <span class="ui-g-2">
+    <h5>Status da Solicitação</h5>
+    <p-dropdown [(ngModel)]="status" name="funcionalidade" placeholder="Selecione um Status" [options]="listaStatus"></p-dropdown>
+  </span>
+  <span class="ui-g-12 py-0"></span>
+  <span class="ui-g-4">
+    <h5>{{ isEleitoral ? 'CNPJ' : 'CPF/CNPJ'}}</h5>
+    <ng-container *ngIf="!isEleitoral && cpfCnpj === 'cpf'">
+      <p-inputMask appCpfCnpjValidate #cpfInput="ngModel" [(ngModel)]="valuePesquisa" name="cpf" mask="999.999.999-99" unmask="true"></p-inputMask>
+      <p style="color: #a80000; font-size: 11px" *ngIf="cpfInput?.errors?.digit || cpfInput?.errors?.equalDigits">CPF inválido</p>
+    </ng-container>
+    <ng-container *ngIf="isEleitoral || cpfCnpj === 'cnpj' || !cpfCnpj">
+      <p-inputMask [disabled]="!isEleitoral && !cpfCnpj" (focusout)="validarCNPJ()" #cnpjInput="ngModel" [(ngModel)]="valuePesquisa" name="cnpj" mask="99.999.999/9999-99" unmask="true"></p-inputMask>
+      <p *ngIf="isValid" style="width: 105px;">
+        <i style="color: red; font-size: 11px;">CNPJ inválido</i>
+      </p>
+    </ng-container>
+  </span>
+  <span *ngIf="!isEleitoral" style="padding-top: 23px" class="ui-g-4">
+    <p>Selecione o tipo de consulta de dados bancários:</p>
+    <p-radioButton name="cpfcnpj" (click)="valuePesquisa = ''" label="CPF" value="cpf" [(ngModel)]="cpfCnpj" class="mr-1"></p-radioButton>
+    <p-radioButton name="cpfcnpj" (click)="valuePesquisa = ''" label="CNPJ" value="cnpj" [(ngModel)]="cpfCnpj"></p-radioButton>
+  </span>
+  <span class="ui-g-12 py-0"></span>
+  <span class="ui-g-4">
+    <h5>Data do Evento</h5>
+    <p-calendar [yearNavigator]="true" monthNavigator="true" yearRange="{{ yearRange }}" [(ngModel)]="iniPeriodo" name="iniPeriodo"
+      [locale]="globals.ptbr" dateFormat="dd/mm/yy" placeholder="Início" name="dtRepasse"></p-calendar>
+  </span>
+  <span class="ui-g-4">
+    <h5 style="opacity: 0">.</h5> <!-- Necessário para manter posicionamento -->
+    <p-calendar [yearNavigator]="true" monthNavigator="true" yearRange="{{ yearRange }}" [(ngModel)]="fimPeriodo" name="fimPeriodo"
+      [minDate]="iniPeriodo" [locale]="globals.ptbr" dateFormat="dd/mm/yy" placeholder="Fim" name="dtRepasse"></p-calendar>
+  </span>
+</form>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2">
+  <button *ngIf="isFila" type="button" class="btn btn-warn" (click)="visualizaFila();op.toggle($event)">
+      <i class="fas fa-list-ol"></i>
+  </button>
+  <button type="button" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+  <button type="button" class="btn btn-danger" (click)="globals.limpar(pesquisaForm)">Limpar</button>
+</div>
+
+<div>
+  <ng-container *ngIf="isAfastamento; else tabelaSolicitacoes">
+    <app-tabela-afastamentos
+      [isEleitoral]="isEleitoral"
+      [isLoading]="isLoading"
+      [lista]="lista"
+      [totalRecords]="totalRecords"
+      (isBotaoFila)="preparaFila($event)"
+      (paginado)="paginar($event)"
+    ></app-tabela-afastamentos>
+  </ng-container>
+  <ng-template #tabelaSolicitacoes>
+    <app-tabela-solicitacoes
+      [isPendentes]="isPendentes"
+      [isEleitoral]="isEleitoral" 
+      [isLoading]="isLoading"
+      [lista]="lista"
+      [totalRecords]="totalRecords"
+      (paginado)="paginar($event)"
+    ></app-tabela-solicitacoes>
+  </ng-template>
+</div>
+<!--Modal Fila de arquivos-->
+<p-overlayPanel #op [showCloseIcon]="true" [dismissable]="false">
+  <div class="ui-overlaypanel-content">
+    <h3 class="titulo">
+      Fila de geração
+    </h3>
+    <p-table [autoLayout]="true" [value]="processosEmfila">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Posição</th>
+          <th>Solicitante do download</th>
+          <th>Código</th>
+          <th>Data da sol. Download</th>
+          <th>Operador</th>
+        </tr>
+      </ng-template>
+      <ng-template let-i="rowIndex" pTemplate="body" let-fila l>
+        <tr>
+          <td>{{i + 1}}º</td>
+          <td>{{ fila.matricula }}</td>
+          <td>{{ fila?.solicitacao.codigoSolicitacao ? fila?.solicitacao.codigoSolicitacao.codigo : ''}}</td>
+          <td>{{ fila.dtHoraCadastro | date: "dd/MM/yyyy hh:mm:ss" }}</td>
+          <td>{{ fila.matricula }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-overlayPanel>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

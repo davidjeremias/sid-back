@@ -1,0 +1,41 @@
+[
+    {
+        "label": "Contas Eleitorais",
+        "icon": "fas fa-list-ul",
+        "heading": true,
+        "items": [
+            {
+                "label": "Consultar Arquivos",
+                "icon": "fas fa-search",
+                "routerLink": "/consultarArquivos",
+                "roles": [
+                    "DCE_MATRIZ",
+                    "DCE_OPERADOR",
+                    "DCE_CONSULTA",
+                    "DCE_AUDITORIA",
+                    "uma_authorization"
+                ]
+            },
+            {
+                "label": "Gerar Arquivos",
+                "icon": "fas fa-upload",
+                "routerLink": "/upload",
+                "roles": [
+                    "DCE_MATRIZ",
+                    "DCE_OPERADOR",
+                    "uma_authorization"
+                ]
+            }
+        ]
+    },
+    {
+        "label": "Dados de Auditoria",
+        "icon": "fas fa-shield-alt",
+        "routerLink": "/auditoria",
+        "roles": [
+            "DCE_MATRIZ",
+            "DCE_OPERADOR",
+            "uma_authorization"
+        ]
+    }
+]

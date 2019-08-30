@@ -1,0 +1,69 @@
+<div *ngIf="!isPendentes">
+  <h3 class="titulo">{{titulo}}</h3>
+</div>
+
+<div *ngIf="iniciarVerificacoes(solicitacao)" class="d-flex text-center align-items-center" style="margin-bottom: 1em;">
+  <div *ngIf="isConcluido" style="margin-right: 8.5em;">
+    <h4 class="title t-primary">Solicitante</h4>
+    <h3 class="title">{{ solicitacao?.matricula }}</h3>
+  </div>
+  <div *ngIf="isConcluido" style="margin-right: 10em;">
+    <h4 class="title t-primary">Solicitação</h4>
+    <h3 class="title">{{ solicitacao?.dtHoraCadastro | date: "dd/MM/yyyy" }}</h3>
+    <h5 class="title">{{ solicitacao?.dtHoraCadastro | date: "HH:mm:ss" }}</h5>
+  </div>
+  <div *ngIf="solicitacao?.codigoSolicitacao">
+    <h4 class="title t-primary">Código</h4>
+    <h3 class="title">{{ solicitacao?.codigoSolicitacao.codigo }}</h3>
+  </div>
+</div>
+<div class="d-flex text-center align-items-center justify-content-between">
+  <div>
+    <h4 class="title t-primary">{{ isConcluido ? 'Operador' : 'Solicitante' }}</h4>
+    <h3 class="title">{{ isConcluido ? solicitacao?.matriculaResponsavel : solicitacao?.matricula }}</h3>
+  </div>
+  <div class="ml-2">
+    <h4 class="title t-primary">{{ gerarNomeData(solicitacao) }}</h4>
+    <h3 class="title">{{ gerarData(solicitacao) | date: "dd/MM/yyyy" }}</h3>
+    <h5 class="title">{{ gerarData(solicitacao) | date: "HH:mm:ss" }}</h5>
+  </div>
+
+  <div class="ml-2">
+    <h4 class="title t-primary">Status da Solicitação</h4>
+    <h3 class="title">{{ solicitacao?.situacaoSolicitacao.nomeSituacao }}</h3>
+  </div>
+  <button type="button" [disabled]="isDownloadAndamento" class="btn btn-primary ml-2" (click)="download(solicitacao)">Ofício
+    Incluído<cite></cite></button>
+</div>
+<div *ngIf="solicitacao?.situacaoSolicitacao.nomeSituacao == 'Recusado'" class="d-flex text-left align-items-left justify-content-between"
+  style="margin-top: 1em;">
+  <div>
+    <h4 class="title t-primary">Motivo</h4>
+    <h3 class="title">{{ solicitacao?.motivoRejeicao }}</h3>
+  </div>
+</div>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{ isEleitoral ? 'CNPJ' : 'CPF/CNPJ'}}</th>
+      <th>Agência</th>
+      <th>Operação</th>
+      <th>Conta-Dv</th>
+      <th>Data de Abertura</th>
+      <th>Status</th>
+      <th>Período da Informação</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let conta of solicitacao?.contas">
+      <td>{{conta?.cpfCNPJ}}</td>
+      <td>{{conta?.agencia}}</td>
+      <td>{{conta?.operacao}}</td>
+      <td>{{conta?.conta}}-{{conta?.digitoConta}}</td>
+      <td>{{conta?.dataAbertura | date: "dd/MM/yyyy" }}</td>
+      <td>{{conta?.situacao}}</td>
+      <td>{{conta?.inicioPeriodo | date: "dd/MM/yyyy" }} a {{conta?.fimPeriodo | date: "dd/MM/yyyy" }}</td>
+    </tr>
+  </tbody>
+</table>

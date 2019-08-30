@@ -1,0 +1,118 @@
+<div class="ui-g">
+  <div class="ui-g-8">
+    <h3 class="titulo">Gerar Arquivos</h3>
+    
+    <p-messages [(value)]="msgs" [closable]="false"></p-messages>
+    
+    <h4 class="title">Período da informação</h4>
+    
+    <h1 class="title">{{pegaMesAnterior()}} <span class="title-label">{{pegaAno()}}</span></h1>
+    
+    <hr>
+    
+    <h4>Realize o upload dos arquivos do TSE</h4>
+    
+    <p>Selecione os arquivos que serão carregados</p>
+    
+    <div class="mt-1">
+      <p-radioButton
+        [value]="true"
+        [disabled]="!isValido"
+        (onClick)="validarUpload(1)"
+        class="mr-1"
+        name="tipo"
+        label="Partido"
+      ></p-radioButton>
+      <p-radioButton
+        [value]="false"
+        [disabled]="!isValido"
+        (onClick)="validarUpload(2)"
+        name="tipo"
+        label="Partido e Candidato"
+      ></p-radioButton>
+    </div>
+    
+    <ng-container *ngIf="mostraUpload && isValido">
+      <hr>
+      <div>
+      <p-fileUpload
+        #fupload
+        name="arquivo[]"
+        multiple="multiple"
+        mode="basic"
+        accept="text/plain"
+        customUpload="true"
+        (onSelect)="validaTipo($event)"
+        (uploadHandler)="onFileChanged($event, fupload)"
+        auto="true"
+        styleClass="btn btn-primary"
+        chooseLabel="Selecionar Arquivo"
+        [disabled]="validarArquivo"
+      ></p-fileUpload>
+      </div>
+    </ng-container>
+    
+    <div *ngIf="dadosArquivoArray.length > 0">
+      <hr>
+      <h4 class="title mb-1">Arquivos Carregados</h4>
+      <div class="d-flex">
+        <div class="card mx-1 d-flex direction-column align-items-center" style="width: fit-content" *ngFor="let dados of dadosArquivoArray">
+          <span style="font-size: 4em; color: #ccc;">
+            <i class="fas fa-file-alt"></i>
+          </span>
+          {{dados.name}}
+        </div>
+      </div>
+    </div>
+    
+    <input type="hidden" #inputFile>
+    
+    <div *ngIf="dadosArquivo">
+    
+      <div class="w-100 d-flex justify-content-end">
+        <button [disabled]="bloqueiaGerar" (click)="gerarArquivo()" class="btn btn-primary">
+          Gerar Arquivo
+        </button>
+        <button class="btn btn-danger" (click)="validarUpload(0);">Limpar</button>
+      </div>
+    
+    </div>
+
+  </div>
+
+  <div class="ui-g-1">
+    <ng-container #loading *ngIf="ldUpload">
+      <div class="t-align-center" style="margin-top: 20em;margin-left: -22em;">
+          <img src="../../assets/images/loading.gif">
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="ui-g-3">
+    <h4 class="title">Última geração</h4>
+    <div class="my-1">
+      <p><b>Solicitante:</b> {{usuario}}</p>
+      <p><b>Data:</b> {{dataProcessamento | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+    </div>
+    <button (click)="downloadUltimo()" type="button" class="btn btn-primary">Baixar</button>
+    <!-- <table class="tabela_arquivos table table-hover table-striped">
+      <tr class="info">
+        <td><b>Solicitante</b></td>
+        <td><b>Data</b></td>
+        <td colspan="5"><b>Arquivos</b></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{usuario}}</td>
+        <td>{{dataAtual | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+        <td>
+          <div *ngFor="let arq of arquivos">
+            <i class="{{arq.fileName}} margen-icon">{{arq.fileName}}</i>
+          </div>
+        </td>
+        <td><button class="botao_baixar_arquivo glyphicon glyphicon-download" (click)="baixarArquivo(arquivos.fileDownloadUri)"
+            title="Baixar Todos os arquivos"></button></td>
+      </tr>
+    </table> -->
+  </div>
+</div>

@@ -1,0 +1,471 @@
+/**
+* Folha de estilos padronizada para projetos caixa
+*
+* @author: allef.garug
+* @version 1.0.0
+ */
+
+@font-face {
+    font-family: futura;
+    src: url('../fonts/futura/futuraBold.ttf');
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: futura;
+    src: url('../fonts/futura/futuraBook.ttf');
+    font-weight: 400;
+}
+
+/* ---------- Alerts */
+.alert {
+    font-size: 1em;
+    border: none;
+}
+
+.alert h1 {
+    margin-bottom: .55em;
+    font-size: 24px;
+}
+
+.alert p {
+    font-size: 16px;
+}
+
+.alert.alert-danger {background: #ffcccc}
+
+.alert-danger h2,
+.alert-danger title {
+    color: #c0392b !important;
+}
+
+/* ---------- Arrows em Divs */
+.arrow_top,
+.arrow_right,
+.arrow_bottom,
+.arrow_left {
+    position: relative;
+}
+
+.arrow_top:after {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 5px;
+	margin-left: -5px;
+}
+
+.arrow_right:after {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #fff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+
+.arrow_bottom:after {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-top-color: #fff;
+	border-width: 5px;
+	margin-left: -5px;
+}
+
+.arrow_left:after {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #fff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+
+/* ---------- Botões */
+.btn,
+body .ui-button {
+    border-radius: 2px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-size: 1.15em;
+    min-width: 45px;
+    height: 45px;
+    border: none;
+    font-family: futura;
+    font-weight: bolder;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+}
+
+.btn-warn {
+    background: #e0780f !important;
+    color: #fff;
+}
+
+.btn-warn:hover,
+.btn-warn:active,
+.btn-warn:focus {color: #fff}
+
+.btn-danger, .btn-error {
+    background: #c0392b !important;
+    color: #fff;
+}
+
+.btn-error:hover, .btn-danger:hover,
+.btn-error:active, .btn-danger:active,
+.btn-error:focus, .btn-danger:focus {color: #fff}
+
+.btn:hover {background: #F9B000 !important}
+
+.btn-icon {
+    min-width: auto;
+    height: auto;
+    font-size: 1.25em;
+}
+
+.btn:disabled {
+    background: rgba(0,0,0,.3) !important;
+}
+
+.btn.inline-input {
+    margin-top: -9px;
+    height: 50px;
+    width: 50px;
+}
+
+/* ---------- Card */
+.card {
+    color: #333;
+    padding: 1em;
+    background: #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.card-25 {
+    padding-bottom: 25%;
+    width: 25%;
+}
+
+/* ---------- Containers */
+.container-section {
+    padding: 1em 2em;
+    border: 1px solid rgba(0,0,0,.2);
+    border-top: none;
+}
+
+.color.green {background: #d6ffd7}
+.color.yellow {background: #fffccc}
+.color.red {background: #ffcccc}
+.color.orange {background: #ffd79e;}
+
+/* ---------- Display */
+.d-flex {display: flex !important}
+.d-none {display: none !important}
+.d-block {display: block !important}
+.d-inline-block {display: inline-block !important}
+.d-table-c {
+    display: table-caption !important;
+    caption-side: bottom
+}
+
+.align-items-center {align-items: center}
+.align-items-start {align-items: flex-start}
+.align-items-end {align-items: flex-end}
+.align-items-baseline {align-items: baseline}
+.align-items-stretch {align-items: stretch}
+
+.justify-content-start {justify-content: start}
+.justify-content-end {justify-content: flex-end}
+.justify-content-center {justify-content: center}
+.justify-content-evenly {justify-content: space-evenly}
+.justify-content-around {justify-content: space-around}
+.justify-content-between {justify-content: space-between}
+
+.d-flex.wrap {flex-wrap: wrap}
+
+.direction-column {flex-direction: column}
+
+.flex-wrap {flex-wrap: wrap}
+.flex-nowrap {flex-wrap: nowrap}
+.flex-wrap-reverse {flex-wrap: wrap-reverse}
+
+.flex-grow-0 {flex-grow: 0}
+.flex-grow-1 {flex-grow: 1}
+.flex-shrink-0 {flex-shrink: 0}
+.flex-shrink-1 {flex-shrink: 1}
+
+/* ---------- Float */
+.f-left {float: left}
+.f-right {float: right}
+.f-none {float: none}
+
+/* ---------- Padding */
+.pt-0, .py-0 {padding-top: 0}
+.pt-1, .py-1 {padding-top: 1.25em}
+.pt-2, .py-2 {padding-top: 2.50em}
+.pt-3, .py-3 {padding-top: 3.75em}
+.pt-4, .py-4 {padding-top: 4em}
+.pt-5, .py-5 {padding-top: 5.25em}
+
+.pr-0, .px-0 {padding-right: 0}
+.pr-1, .px-1 {padding-right: 1.25em}
+.pr-2, .px-2 {padding-right: 2.50em}
+.pr-3, .px-3 {padding-right: 3.75em}
+.pr-4, .px-4 {padding-right: 4em}
+.pr-5, .px-5 {padding-right: 5.25em}
+
+.pb-0, .py-0 {padding-bottom: 0}
+.pb-1, .py-1 {padding-bottom: 1.25em}
+.pb-2, .py-2 {padding-bottom: 2.50em}
+.pb-3, .py-3 {padding-bottom: 3.75em}
+.pb-4, .py-4 {padding-bottom: 4em}
+.pb-5, .py-5 {padding-bottom: 5.25em}
+
+.pl-0, .px-0 {padding-left: 0}
+.pl-1, .px-1 {padding-left: 1.25em}
+.pl-2, .px-2 {padding-left: 2.50em}
+.pl-3, .px-3 {padding-left: 3.75em}
+.pl-4, .px-4 {padding-left: 4em}
+.pl-5, .px-5 {padding-left: 5.25em}
+
+/* ---------- Padrões de exibição */
+.tag-form, .tag-textarea {
+    margin-bottom: 1em;
+}
+
+.tag-form * {
+    display: inline-block;
+    font-size: 1.25em;
+}
+
+.tag-form *:first-child {
+    color: #3A4859;
+    margin-right: .25em;
+}
+
+.tag-form *:first-child:after,
+.tag-textarea *:first-child:after {
+    content: ':';
+}
+
+.t-primary {color: #F9B000}
+.t-secondary {color: #005CA9}
+.t-danger {color: #e74c3c}
+.t-unfocus {color: #ccc}
+
+.t-reset {font-weight: normal}
+
+.teste {background: blue !important}
+
+.tag-textarea {
+    padding-bottom: 1em;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+
+.tag-textarea * {
+    font-size: 1.25em;
+}
+
+.tag-textarea *:first-child {
+    color: #3A4859;
+    display: block;
+}
+
+.title {
+    font-family: futura;
+    font-weight: bolder;
+}
+
+.title-label {
+    color: #337ab7;
+}
+
+.colored-primary {color: #337ab7 !important}
+.colored-ondary { color: #e0780f !important}
+.colored-success, .colored-green { color: #5cb85c !important}
+.colored-warn, .colored-yellow { color: #ffe399 !important }
+.colored-error, .colored-danger, .colored-red { color: #d9534f !important }
+
+/* ---------- Position */
+.p-absolute {position: absolute}
+.p-relative {position: relative}
+.p-sticky {
+    position: sticky;
+    top: 20px;
+    z-index: 999;
+}
+
+/* ---------- Títulos ~ Textos */
+h1, h2, h3, h4, h5, h6 {
+    font-family: futura;
+    font-weight: bolder;
+}
+
+h1.section, h2.section, h3.section, h4.section, h5.section, h6.section {
+    width: 100%;
+    margin-bottom: .5em;
+    padding-bottom: .5em;
+    border-bottom: 1px solid #F9B000;
+    color: #005CA9;
+}
+
+/*---------- Tabela -------------*/
+.table>thead>tr>th {
+    border: none;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
+
+.table thead th {
+    font-family: futura;
+}
+
+.table thead th {
+    background: #f3f5f9;
+    font-weight: bolder;
+}
+
+.table th, .table td {
+    border: 1px solid rgba(0,0,0,.06) !important;
+    padding: 16px !important;
+}
+
+/* ---------- Tooltip  */
+.gar-tooltip {
+    background: #ddd;
+    padding: 5px;
+    font-size: 11px;
+    margin-left: 15px;
+}
+
+/* ---------- Widths ~ Tamanhos */
+.w-25 {width: 25%}
+.w-50 {width: 50%}
+.w-75 {width: 75%}
+.w-100 {width: 100%}
+
+.mt-0, .my-0 {margin-top: 0 !important}
+.mt-1, .my-1 {margin-top: 1em !important}
+.mt-2, .my-2 {margin-top: 2em !important}
+.mt-3, .my-3 {margin-top: 3em !important}
+.mt-4, .my-4 {margin-top: 4em !important}
+.mt-5, .my-5 {margin-top: 5em !important}
+
+.mr-0, .mx-0 {margin-right: 0 !important}
+.mr-1, .mx-1 {margin-right: 1em !important}
+.mr-2, .mx-2 {margin-right: 2em !important}
+.mr-3, .mx-3 {margin-right: 3em !important}
+.mr-4, .mx-4 {margin-right: 4em !important}
+.mr-5, .mx-5 {margin-right: 5em !important}
+
+.mb-0, .my-0 {margin-bottom: 0 !important}
+.mb-1, .my-1 {margin-bottom: 1em !important}
+.mb-2, .my-2 {margin-bottom: 2em !important}
+.mb-3, .my-3 {margin-bottom: 3em !important}
+.mb-4, .my-4 {margin-bottom: 4em !important}
+.mb-5, .my-5 {margin-bottom: 5em !important}
+
+.ml-0, .mx-0 {margin-left: 0 !important}
+.ml-1, .mx-1 {margin-left: 1em !important}
+.ml-2, .mx-2 {margin-left: 2em !important}
+.ml-3, .mx-3 {margin-left: 3em !important}
+.ml-4, .mx-4 {margin-left: 4em !important}
+.ml-5, .mx-5 {margin-left: 5em !important}
+
+/**
+* CSS Externos, dependem de algum outro framework ou biblioteca para serem de fato aplicados
+* Se não tiver certeza absoluta da aplicação das classes abaixo, não alterar e/ou aplicar
+*
+* É sério, faz isso não.
+*
+*/
+/* ---------- Formulários (Primeng) */
+.ui-float-label {
+    margin-top: 10px;
+}
+
+.ui-float-label>label {
+    left: 1.65em !important;
+    background: white;
+    padding: 0 5px;
+}
+
+.ui-float-label>.ui-inputtext.ui-state-filled ~ label,
+.ui-float-label .ui-inputtext:focus + label {
+    top: 0.55em !important;
+    background: white;
+    padding: 0 5px;
+}
+
+.ui-float-label>.ui-inputtext.ui-state-filled:not(.ui-inputtextarea-resizable) ~ label,
+.ui-float-label .ui-inputtext:focus:not(.ui-inputtextarea-resizable) + label {
+    top: 0.05em !important;
+}
+
+.ui-float-label>.ui-inputwrapper-filled ~ label,
+.ui-float-label>.ui-inputwrapper-focus ~ label {
+    top: .65em  !important;
+}
+
+body .ui-inputtext {
+    border-radius: 0 !important;
+    border: none !important;
+    border: 1px solid rgba(0,0,0,.2) !important;
+    transition: all ease .3s;
+    padding: 1.2em 1em .8em !important;
+    border-radius: 3px;
+}
+
+body .ui-dropdown .ui-dropdown-trigger {
+    background-color: transparent;
+}
+body .ui-dropdown {
+    border: none;
+}
+
+body .ui-inputtext:enabled:focus:not(.ng-invalid) {
+    border: 1px solid #005CA9 !important;
+}
+
+body .ui-inputtext:enabled:focus:not(.ng-invalid) + label,
+.ui-inputwrapper-focus + label {
+    color: #005CA9 !important;
+}
+
+.ui-inputtext.ng-invalid:not(.ng-untouched),
+p-calendar.ng-invalid:not(.ng-untouched) .ui-inputtext {
+    border-color: #e74c3c !important;
+}
+
+.ui-inputtext.ng-invalid:not(.ng-untouched) + label,
+p-calendar.ng-invalid:not(.ng-untouched):not(.ui-inputwrapper-focus) + label {
+    color: #e74c3c !important;
+}

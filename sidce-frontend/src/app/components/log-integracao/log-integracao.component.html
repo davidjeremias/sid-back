@@ -1,0 +1,96 @@
+<h3 class="titulo">
+  Log de Integração com o TSE
+</h3>
+
+<div class="ui-g ui-fluid tituloForm">
+  <h5>Data da Execução</h5>
+</div>
+<div class="ui-g ui-fluid">
+  <div class="ui-g-2">
+    <span class="ui-float-label">
+      <p-calendar 
+      [(ngModel)]="inicio"
+      dateFormat="dd/mm/yy"
+      [showTime]="true"
+      [readonlyInput]="true">
+      </p-calendar>
+      <label for="float-input">Início</label>
+    </span>
+  </div>
+  <div class="ui-g-2">
+    <span class="ui-float-label">
+      <p-calendar 
+      [(ngModel)]="fim"
+      dateFormat="dd/mm/yy"
+      [showTime]="true"
+      [minDate]="inicio"
+      [readonlyInput]="true">
+      </p-calendar>
+      <label for="float-input">Fim</label>
+    </span>
+  </div>
+</div>
+
+<div class="ui-g ui-fluid">
+  <div class="ui-g-2">
+    <span class="ui-float-label">
+      <p-dropdown 
+      [options]="status" 
+      [style]="{'width': '100%'}" 
+      [(ngModel)]="selectedStatus" 
+      optionLabel="label" 
+      [showClear]="true">
+      </p-dropdown>
+      <label style="font-size: 13px" for="float-input">Status</label>
+    </span>
+  </div>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-end mb-2">
+  <br>
+  <div>
+    <button type="submit" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+    <button type="submit" class="btn btn-danger" (click)="limpar()">Limpar</button>
+  </div>
+</div>
+
+<div class="w-100">
+  <p-table [autoLayout]="true" [value]="listaLog" *ngIf="!ldConsulta; else loading">
+    <ng-template pTemplate="header">
+      <tr *ngIf="listaLog">
+        <th>Data da Execução</th>
+        <th>Status</th>
+        <th>Detalhamento</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{ item.dataHoraProcessamento | date: "dd/MM/yyyy HH:mm:ss" }}</td>
+        <td>
+            <span *ngIf="item.status == 0">Erro</span>
+            <span *ngIf="item.status == 1">Sucesso</span>
+        </td>
+        <td class="left">
+            <button (click)="detalhar(item.id)" class="btn btn-icon btn-primary">
+            <i class="fas fa-th-list"></i>
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+      *ngIf="listaLog"
+      [rows]="10"
+      [totalRecords]="totalRecords"
+      [alwaysShow]="false"
+      (onPageChange)="paginar($event)"
+    ></p-paginator>
+
+    <ng-template #loading>
+        <div style="margin-left: 45em !important;" class="mt-3 w-100 t-align-center">
+            <img src="../../assets/images/loading.gif">
+        </div>
+    </ng-template>
+</div>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

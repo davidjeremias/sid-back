@@ -1,0 +1,106 @@
+
+.botao-upload{
+    display: block;
+     
+     padding: 5px;
+     font-size: 15px;
+     margin-right: 10px;
+}
+
+.tabela_arquivos{
+    font-size: 15px;
+    margin-top: 30px;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+}
+
+.labels{
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #3A4859;
+}
+
+
+.painel-Loard{
+    position:absolute; 
+    width: 1000px; 
+    height: 400px;
+    margin-top: -25%; 
+    margin-left: -05%; 
+    background-color: transparent;
+  }
+
+  .carregamento{
+    width: 10px; 
+    height: 10px; 
+    margin-left: 42%;
+  }
+
+.botao{
+    padding: 10px;
+    max-width: 95px;
+    min-width: 95px;
+    height:45px;
+    background-color: #17a2b8;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    border-color: transparent;
+    text-align: center;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.botao:hover{
+    background-color: #F9B000;
+}
+
+.botaoLimpar{
+    padding: 10px;
+    max-width: 90px;
+    min-width: 90px;
+    height:45px;
+    background-color: #dc3545;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    border-color: transparent;
+    text-align: center;
+}
+
+.botaoLimpar:hover{
+    background-color: #F9B000;
+}
+
+.botao-desativado{
+    height:45px;
+    color: #54BBAB;
+    font-family: "Futura-CondensedExtraBold", sans-serif;
+    font-size: 12px;
+    text-align: center;
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .validar-campo{
+      border-color:#F9765E;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+  }
+

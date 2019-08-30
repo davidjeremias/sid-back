@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jboss-deployment-structure
+	xmlns="urn:jboss:deployment-structure:1.2">
+	<deployment>
+		<exclude-subsystems>
+			<subsystem name="keycloak" />
+
+		</exclude-subsystems>
+
+		<exclusions>
+			<module name="keycloak-adapter-core" />
+			<module name="keycloak-adapter-spi" />
+			<module name="keycloak-adapter-subsystem" />
+			<module name="keycloak-authz-client" />
+			<module name="keycloak-common" />
+			<module name="keycloak-common" />
+			<module name="keycloak-jboss-adapter-core" />
+			<module name="keycloak-servlet-oauth-client" />
+			<module name="keycloak-undertow-adapter" />
+			<module name="keycloak-wildfly-adapter" />
+			<module name="keycloak-wildfly-elytron-oidc-adapter" />
+			<module name="keycloak-wildfly-subsystem" />
+
+			<module name="com.fasterxml.jackson.core.jackson-annotations" />
+			<module name="com.fasterxml.jackson.core.jackson-core" />
+			<module name="com.fasterxml.jackson.core.jackson-databind" />
+			<module
+				name="com.fasterxml.jackson.datatype.jackson-datatype-jdk8" />
+			<module
+				name="com.fasterxml.jackson.datatype.jackson-datatype-jsr310" />
+			<module
+				name="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" />
+			<module name="org.jboss.resteasy.resteasy-jackson2-provider" />
+			<module name="org.slf4j" />
+		</exclusions>
+	</deployment>
+</jboss-deployment-structure>

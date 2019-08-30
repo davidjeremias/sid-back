@@ -1,0 +1,70 @@
+<div class="sidenav" style="z-index: 1" (mouseover)="isOver = true" (mouseout)="isOver = false">
+  <span class="toggle-button" (click)="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </span>
+  <ng-container
+    [ngTemplateOutlet]="lista" 
+    [ngTemplateOutletContext]="{lista:menu, root: true}"
+  ></ng-container>
+</div>
+
+<!-- Template para nova lista -->
+<ng-template #lista let-lista="lista" let-root="root">
+  <ul class="menu">
+    <li *ngFor="let item of lista">
+      <ng-container
+        [ngTemplateOutlet]="item.disabled ? disabledItem : item.items ? dropDownItem : simpleItem" 
+        [ngTemplateOutletContext]="{item:item}"
+      >
+      </ng-container>
+    </li>
+  </ul>
+</ng-template>
+
+<!-- Template de Item quando houver submenus -->
+<ng-template #dropDownItem let-item="item">
+  <span class="item" [ngClass]="{'comMargem': isAberto || isOver}" (click)="toggleSubmenus(subLista)">
+    <ng-container
+      [ngTemplateOutlet]="info" 
+      [ngTemplateOutletContext]="{item:item}"
+    ></ng-container>
+    <span class="flex-grow-1 text-right" [ngClass]="isAberto || isOver ? 'aberto' : 'fechado'" *ngIf="item.items">
+      <i [ngClass]="{'virada' : isVirada(subLista)}" class="arrow-sub fas fa-angle-right"></i>
+    </span>
+  </span>
+  <div class="sublist" #subLista>
+    <ng-container
+      [ngTemplateOutlet]="lista"
+      [ngTemplateOutletContext]="{lista:item.items, root:false}"
+    ></ng-container>
+  </div>
+</ng-template>
+
+<!-- Template de Item simples para click -->
+<ng-template #simpleItem let-item="item">
+    <a class="item" [ngClass]="{'comMargem': isAberto || isOver }" routerLink="{{item.routerLink}}">
+      <ng-container
+        [ngTemplateOutlet]="info" 
+        [ngTemplateOutletContext]="{item:item}"
+      ></ng-container>
+    </a>
+</ng-template>
+
+<ng-template #disabledItem let-item="item">
+    <p class="item disabled" [ngClass]="{'comMargem': isAberto || isOver }">
+      <ng-container
+        [ngTemplateOutlet]="info" 
+        [ngTemplateOutletContext]="{item:item}"
+      ></ng-container>
+    </p>
+</ng-template>
+
+<!-- Template para exibição de informações em comum -->
+<ng-template #info let-item="item">
+  <span class="icon">
+    <i [ngClass]="item.icon"></i>
+  </span>
+  <span class="text" [ngClass]="isAberto || isOver ? 'aberto' : 'fechado'">
+    {{item.label}}
+  </span>
+</ng-template>

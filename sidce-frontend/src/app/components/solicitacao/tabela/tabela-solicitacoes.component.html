@@ -1,0 +1,85 @@
+<div class="w-100">
+  <ng-container *ngIf="!isLoading; else loader">
+    <p-table [value]="lista" *ngIf="lista.length > 0; else nadaExibido">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 15%;">Solicitante</th>
+          <th style="width: 15%;">Código</th>
+          <th>Data e Hora da Inclusão da Solicitação</th>
+          <th style="width: 20%;">Status</th>
+          <th>Ações</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{item?.matricula}}</td>
+          <td>{{item?.codigoSolicitacao ? item?.codigoSolicitacao.codigo : ''}}</td>
+          <td>{{item?.dtHoraCadastro | date: "dd/MM/yyyy HH:mm:ss"}}</td>
+          <td>{{item?.situacaoSolicitacao.nomeSituacao}}</td>
+          <td class="left">
+            <ng-container *ngIf="!isPendentes">
+              <!-- Botão de Excluir Solicitação -->
+              <button
+                *ngIf="item.rascunho && item.isUsuarioCriador"
+                (click)="excluir(item)"
+                class="btn btn-icon btn-danger"
+                title="Excluir Solicitação">
+                  <i class="fas fa-trash-alt"></i>
+              </button>
+  
+              <!-- Botão de Editar Solicitação -->
+              <button
+                *ngIf="item.rascunho && item.isUsuarioCriador"
+                (click)="editar(item)"
+                class="btn btn-icon btn-primary"
+                title="Alterar Solicitação">
+                  <i class="fas fa-edit"></i>
+              </button>
+            </ng-container>
+
+            <!-- Botão de Detalhar Solicitação -->
+            <button
+              (click)="detalhar(item)"
+              class="btn btn-icon btn-primary"
+              title="Detalhar Solicitação">
+                <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Botão para Análise de Solicitação -->
+            <button
+              (click)="analisar(item)"
+              class="btn btn-icon btn-primary"
+              title="Analisar Solicitação"
+              *ngIf="item.situacaoSolicitacao.nomeSituacao == 'Enviado para aprovação' && isPendentes">
+                <i class="fas fa-clipboard-check"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <div [ngStyle]="getDisplay()">
+    <p-paginator [rows]="10" [totalRecords]="totalRecords" (onPageChange)="paginar($event)"></p-paginator>
+  </div>
+</div>
+
+<p-confirmDialog acceptLabel="Sim" rejectLabel="Não"></p-confirmDialog>
+
+<p-dialog [modal]="true" dismissableMask="true" [(visible)]="isDetalhando">
+  <app-detalhar-solicitacao [isEleitoral]="isEleitoral" [isAfastamento]="isAfastamento" [solicitacao]="detalhando" [isRejeitado]="isRejeitado"></app-detalhar-solicitacao>
+</p-dialog>
+  
+
+<ng-template #loader>
+    <div class="w-100 d-flex justify-content-center">
+      <img src="../../assets/images/loading.gif">
+    </div>
+</ng-template>
+  
+  <ng-template #nadaExibido>
+    <div class="px-1 py-1" *ngIf="lista?.length == 0 && !isLoading">
+      <hr>
+      <h4 class="text-center t-unfocus">Nada a ser exibido</h4>
+    </div>
+  </ng-template>
+  

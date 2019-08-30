@@ -1,0 +1,247 @@
+<h3 class="titulo">
+  Detalhe dos 5 arquivos
+</h3>
+
+<div *ngIf="codigoSolicitacao" style="margin-right: 7em; margin-top: 1em;">
+  <h4 class="title t-primary">Código: <span style="color:black;">{{ codigoSolicitacao }}</span></h4>
+</div>
+
+<div class="ui-g ui-fluid">
+  
+    <div class="ui-sm-12 ui-md-6 ui-lg-3">
+        <span class="ui-float-label">
+          <input id="float-input" autocomplete="off" type="text" pInputText maxlength="4" [(ngModel)]="numeroAgencia"
+            onpaste="return false" ondrop="return false" pKeyFilter="int">
+          <label for="float-input">Nº Agência</label>
+        </span>
+    </div>
+  
+    <div class="ui-sm-12 ui-md-6 ui-lg-3">
+        <span class="ui-float-label">
+          <input id="float-input" autocomplete="off" type="text" pInputText maxlength="4" [(ngModel)]="operacao"
+            onpaste="return false" ondrop="return false" pKeyFilter="int" disabled>
+          <label for="float-input">Operação</label>
+        </span>
+    </div>
+  
+    <div class="ui-sm-12 ui-md-6 ui-lg-3">
+        <span class="ui-float-label">
+          <p-inputMask 
+            id="float-input" autocomplete="off" type="text" mask="999999999-9" 
+            placeholder="________-_" unmask="true" slotChar=" " [(ngModel)]="numeroConta" 
+            onpaste="return false" ondrop="return false" pKeyFilter="int" (focusout)="incluirZeroEsquerda()">
+          </p-inputMask>
+          <label for="float-input">Nº Conta</label>
+        </span>
+    </div>
+  
+    <div class="ui-sm-12 ui-md-6 ui-lg-3">
+        <span class="ui-float-label">
+          <p-inputMask id="float-input" type="text" [(ngModel)]="cnpj" (focusout)="validarCNPJ()"
+            mask="99.999.999/9999-99" placeholder="__.___.___/____-__" unmask="true" slotChar=" " pKeyFilter="int"
+            onpaste="return false" ondrop="return false"></p-inputMask>
+          <label style="font-size: 13px" for="float-input">CNPJ</label>
+        </span>
+          <p *ngIf="isValid" style="width: 105px;">
+            <i style="color: red; font-size: 11px;">CNPJ inválido</i>
+          </p>
+    </div>
+  <br>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 d-flex justify-content-end">
+    <button class="btn btn-primary" type="button" (click)="paginar($event);">Pesquisar</button>
+    <button class="btn btn-danger" type="button" (click)="limpar($event);">Limpar</button>
+  </div>
+  <p-tabMenu #menuAbas [model]="items" [activeItem]="abaAtiva" (click)="mudaAtiva()" ></p-tabMenu>
+  <p-table [autoLayout]="true" [value]="listaItens" *ngIf="!ldDetalhamento; else loading" [resizableColumns]="true"
+    columnResizeMode="expand">
+    <ng-template pTemplate="header">
+      <!-- *** Cabeçalhos -->
+      <!-- Conta -->
+      <tr *ngIf="abaAtiva === items[0]">
+        <th pResizableColumn> Nº Banco</th>
+        <th pResizableColumn> Nº Agência</th>
+        <th pResizableColumn> Cidade</th>
+        <th pResizableColumn> UF</th>
+        <th pResizableColumn style="width: 500px"> Logradouro</th>
+        <th pResizableColumn> Telefone agência</th>
+        <th pResizableColumn> Detalhamento</th>
+      </tr>
+      <!-- Agência -->
+      <tr *ngIf="abaAtiva === items[1]">
+        <th pResizableColumn> Nº da Conta</th>
+        <th pResizableColumn> Nº banco</th>
+        <th pResizableColumn> Nº Agência</th>
+        <th pResizableColumn> Tipo</th>
+        <th pResizableColumn> Data Abertura</th>
+        <th pResizableColumn> Data Encerramento</th>
+        <th pResizableColumn> Movimentação</th>
+        <th pResizableColumn> Detalhamento</th>
+      </tr>
+      <!-- Extrato -->
+      <tr *ngIf="abaAtiva === items[2]">
+        <th pResizableColumn> Chave Extrato</th>
+        <th pResizableColumn> Data Lançamento</th>
+        <th pResizableColumn> Documento</th>
+        <th pResizableColumn> Descrição Lancamento</th>
+        <th pResizableColumn> Tipo Lançamento</th>
+        <th pResizableColumn> Valor Lançamento</th>
+        <th pResizableColumn> Detalhamento</th>
+      </tr>
+      <!-- Origem/Destino -->
+      <tr *ngIf="abaAtiva === items[3]">
+        <th pResizableColumn> Valor Transação</th>
+        <th pResizableColumn> Nº Doc Transação</th>
+        <th pResizableColumn> Código Banco</th>
+        <th pResizableColumn> Nº Agência</th>
+        <th pResizableColumn>Nº Conta</th>
+        <th pResizableColumn style="width: 150px">CPF/CNPJ</th>
+        <th pResizableColumn>Detalhamento</th>
+      </tr>
+      <!-- Titular -->
+      <tr *ngIf="abaAtiva === items[4]">
+        <th pResizableColumn> Tipo Vínculo</th>
+        <th pResizableColumn> Pessoa Investigada</th>
+        <th pResizableColumn> Tipo Pessoa Titular</th>
+        <th pResizableColumn> CPF/CNPJ</th>
+        <th pResizableColumn> Nome Completo</th>
+        <th pResizableColumn> Nome Doc Identificação</th>
+        <th pResizableColumn> Detalhamento</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <!-- *** Conteúdos -->
+        <!-- Agência -->
+        <ng-container *ngIf="abaAtiva === items[0]">
+          <td>{{item?.codigoBanco}}</td>
+          <td>{{item?.numeroAgencia}}</td>
+          <td>{{item?.cidade}}</td>
+          <td>{{item?.uf}}</td>
+          <td>{{item?.endereco}}</td>
+          <td>{{item?.telefone}}</td>
+          <ng-container [ngTemplateOutlet]="detalhamento" [ngTemplateOutletContext]="{detalhe: item}"></ng-container>
+        </ng-container>
+        <!-- Contas -->
+        <ng-container *ngIf="abaAtiva === items[1]">
+          <td>{{item?.numeroConta}}</td>
+          <td>{{item?.codigoBanco}}</td>
+          <td>{{item?.numeroAgencia}}</td>
+          <td>{{item?.tipo}}</td>
+          <td>{{item?.dataAbertura}}</td>
+          <td>{{item?.dataEncerramento}}</td>
+          <td>{{item?.movimentacao}}</td>
+          <ng-container [ngTemplateOutlet]="detalhamento" [ngTemplateOutletContext]="{detalhe: item}"></ng-container>
+        </ng-container>
+        <!-- Extrato -->
+        <ng-container *ngIf="abaAtiva === items[2]">
+          <td>{{item?.chaveExtrato}}</td>
+          <td>{{item?.dataLancamento}}</td>
+          <td>{{item?.documento}}</td>
+          <td>{{item?.descricaoLancamento}}</td>
+          <td>{{item?.tipoLancamento}}</td>
+          <td>{{item?.valorLancamento}}</td>
+          <ng-container [ngTemplateOutlet]="detalhamento" [ngTemplateOutletContext]="{detalhe: item}"></ng-container>
+        </ng-container>
+        <!-- Origem/Destino -->
+        <ng-container *ngIf="abaAtiva === items[3]">
+          <td>{{item?.valorTransacao}}</td>
+          <td>{{item?.numeroDocumentoTranscao}}</td>
+          <td>{{item?.codigoBanco}}</td>
+          <td>{{item?.numeroAgencia}}</td>
+          <td>{{item?.numeroConta}}</td>
+          <td>{{item?.cpfCnpj}}</td>
+          <ng-container [ngTemplateOutlet]="detalhamento" [ngTemplateOutletContext]="{detalhe: item}"></ng-container>
+        </ng-container>
+        <!-- Titulares -->
+        <ng-container *ngIf="abaAtiva === items[4]">
+          <td>{{item?.tipoVinculo}}</td>
+          <td>{{item?.pessoaInvestigada}}</td>
+          <td>{{item?.tipoPessoaTitular}}</td>
+          <td>{{item?.cpfCNPJ}}</td>
+          <td>{{item?.nomeCompleto}}</td>
+          <td>{{item?.nomeDocumentoIdentificacao}}</td>
+          <ng-container [ngTemplateOutlet]="detalhamento" [ngTemplateOutletContext]="{detalhe: item}"></ng-container>
+        </ng-container>
+      </tr>
+    </ng-template>
+  </p-table>
+  <div class="ui-g-12">
+    <p-paginator *ngIf="ldPaginacao" [hidden]="detalhando" [rows]="10" [totalRecords]="totalRecords" [alwaysShow]="false"
+      (onPageChange)="paginar($event)"></p-paginator>
+  </div>
+  <!-- *** Detalhes -->
+  <div *ngIf="detalhando && !ldDetalhamento" style="padding: 15px; border: 1px solid rgba(0,0,0,.2)">
+    <!-- Conta -->
+    <ul *ngIf="abaAtiva === items[0]">
+      <li><b>Endereço Pais:</b> {{itemAtivo?.pais}}</li>
+      <li><b>Endereço CEP:</b> {{itemAtivo?.cep}}</li>
+      <li><b>Telefone agência:</b> {{itemAtivo?.telefone}}</li>
+      <li><b>Data abertura agência:</b> {{itemAtivo?.dataAberturaAgencia | date: 'dd/MM/yyyy'}}</li>
+      <li><b>Data fechamento agência: </b>{{itemAtivo?.dataFechamentoAgencia | date: 'dd/MM/yyyy'}}</li>
+    </ul>
+    <!-- Extrato -->
+    <ul *ngIf="abaAtiva === items[2]">
+      <li><b>Nº Banco: </b>{{itemAtivo?.codigoBanco}}</li>
+      <li><b>Nº Agência: </b>{{itemAtivo?.numeroAgencia}}</li>
+      <li><b>Nº Conta: </b>{{itemAtivo?.numeroConta}}</li>
+      <li><b>Tipo Conta: </b>{{itemAtivo?.tipoConta}}</li>
+      <li><b>Natureza Lançamento: </b>{{itemAtivo?.naturezaLancamento}}</li>
+      <li><b>Valor Saldo: </b>{{itemAtivo?.valorSaldo}}</li>
+      <li><b>Natureza Saldo: </b>{{itemAtivo?.naturezaSaldo}}</li>
+      <li><b>Local Transação: </b>{{itemAtivo?.localTransacao}}</li>
+      <li><b>Origem: </b>{{itemAtivo?.origem}}</li>
+    </ul>
+    <!-- Origem/Destino -->
+    <ul *ngIf="abaAtiva === items[3]">
+      <li><b>Código: </b>{{itemAtivo?.codigoOrigemDestino}}</li>
+      <li><b>Chave Extrato: </b>{{itemAtivo?.chaveExtrato}}</li>
+      <li><b>Tipo Conta: </b>{{itemAtivo?.tipoConta}}</li>
+      <li><b>Tipo Pessoa: </b>{{itemAtivo?.tipoPessoa}}</li>
+      <li><b>Nome Pessoa: </b>{{itemAtivo?.nomePessoa}}</li>
+      <li><b>Nome Doc Identificação: </b>{{itemAtivo?.nomeDocumentoIdentificacao}}</li>
+      <li><b>Nº Doc Identificação: </b>{{itemAtivo?.numeroDocumentoIdentificacao}}</li>
+      <li><b>Código de Barra: </b>{{itemAtivo?.codigoBarras}}</li>
+      <li><b>Nome Endossante: </b>{{itemAtivo?.nomeEndossante}}</li>
+      <li><b>Situação: </b>{{itemAtivo?.situacao}}</li>
+      <li><b>Observação: </b>{{itemAtivo?.observacao}}</li>
+    </ul>
+    <!-- Titular -->
+    <ul>
+      <li><b>Código Conta: </b>{{itemAtivo?.codigoConta}}</li>
+      <li><b>Nº Agência: </b>{{itemAtivo?.numeroAgencia}}</li>
+      <li><b>Nº Conta: </b>{{itemAtivo?.numeroConta}}</li>
+      <li><b>Tipo Conta: </b>{{itemAtivo?.tipoConta}}</li>
+      <li><b>Nº Doc Identificação: </b>{{itemAtivo?.numeroDocumentoIdentificacao}}</li>
+      <li><b>Logradouro: </b>{{itemAtivo?.logradouro}}</li>
+      <li><b>Cidade: </b>{{itemAtivo?.cidade}}</li>
+      <li><b>UF: </b>{{itemAtivo?.uf}}</li>
+      <li><b>País: </b>{{itemAtivo?.pais}}</li>
+      <li><b>CEP: </b>{{itemAtivo?.cep}}</li>
+      <li><b>Telefone: </b>{{itemAtivo?.telefone}}</li>
+      <li><b>Renda: </b>{{itemAtivo?.renda}}</li>
+      <li><b>Última Atualização Renda: </b>{{itemAtivo?.ultimaAtualizacaoRenda}}</li>
+      <li><b>Início Relacionamento: </b>{{itemAtivo?.inicioRelacionamento}}</li>
+      <li><b>Fim Relacionamento: </b>{{itemAtivo?.fimRelacionamento}}</li>
+    </ul>
+  </div>
+  <ng-template #loading>
+      <div style="margin-left: 45em !important;" class="mt-3 w-100 t-align-center">
+          <img src="../../assets/images/loading.gif">
+      </div>
+  </ng-template>
+  <div class="ui-g-12 d-flex justify-content-end">
+    <button class="btn btn-warn" type="button" (click)="voltar()">Voltar</button>
+  </div>
+</div>
+
+<ng-template #detalhamento let-detalhe="detalhe">
+  <td>
+    <button type="button" class="btn btn-primary" (click)="toggleDetalhamento(detalhe)">
+      <i class="fas fa-folder-open"></i>
+    </button>
+  </td>
+</ng-template>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

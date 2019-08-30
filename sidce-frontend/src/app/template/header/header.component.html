@@ -1,0 +1,22 @@
+
+<!-- header -->
+<header>
+
+  <div class="content header d-flex justify-between align-items-center">
+    <h1>
+      <a href="/home" title="">Caixa</a>
+    </h1>
+
+    <div class="icone"></div>
+
+    <h2 class="flex-grow-1"><strong></strong>{{ title }}<span class="nav_title_detail"></span></h2>
+    <h2 *ngIf="userName">
+      Olá, <strong>{{ userName }}</strong>      
+      <span class="nav_title_detail" *ngIf="userMatricula"> ({{ userMatricula }})</span>
+    </h2>
+    <a class="item-sair" (click)="logoff()" title="Sair">Sair</a>
+  </div>
+</header>
+
+
+<!-- /header -->

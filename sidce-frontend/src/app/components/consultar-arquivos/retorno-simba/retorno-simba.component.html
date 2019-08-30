@@ -1,0 +1,68 @@
+<p-messages [(value)]="msgs" [closable]="true"></p-messages>
+<p *ngIf="acao == 'incluir'" style="margin-bottom: 1em !important;">Incluir informações de retorno de transmissão para o SIMBA.</p>
+<p *ngIf="isDetalhamento" style="margin-bottom: 1em !important;">Visualizar informações de retorno de transmissão para o SIMBA.</p>
+<p *ngIf="acao == 'alterar'" style="margin-bottom: 1em !important;">Alterar informações de retorno de transmissão para o SIMBA.</p>
+<p *ngIf="acao == 'excluir'" style="margin-bottom: 1em !important;">Excluir informações de retorno de transmissão para o SIMBA.</p>
+
+<div *ngIf="solicitacao?.codigoSolicitacao" style="margin-right: 7em;">
+  <h4 class="title t-primary" style="margin-bottom: 1em">Código: <span style="color:black;">{{ solicitacao?.codigoSolicitacao.codigo }}</span></h4>
+</div>
+
+<p>Selecione o tipo de arquivo emitido pelo SIMBA¹.</p>
+<div class="d-flex justify-content-evenly mb-2">
+  <ng-container *ngFor="let situacao of situacoes">
+    <p-radioButton
+      *ngIf="situacao?.id === 2 || situacao?.id === 3" 
+      name="statusRetorno"
+      [value]="situacao?.id"
+      [label]="situacao.nomeSituacao"
+      [(ngModel)]="status"
+      [inputId]="situacao.id"
+      [disabled]="isDetalhamento"
+    ></p-radioButton>
+  </ng-container>
+</div>
+<div class="my-1 d-flex align-items-center justify-content-evenly">
+  <p-fileUpload
+    #fupload
+    name="arquivo[]"
+    mode="basic"
+    accept="application/pdf"
+    [maxFileSize]="tamanhoArquivo"
+    customUpload="true"
+    (uploadHandler)="uploadImage($event, fupload)"
+    (onSelect)="validaArquivo($event)"
+    auto="true"
+    styleClass="btn btn-primary"
+    chooseLabel="Selecionar Arquivo"
+    [disabled]="isDetalhamento"
+  ></p-fileUpload>
+  <button (click)="download(processo)" class="btn btn-primary" *ngIf="acao !== 'incluir' && !solic">
+    <i class="fas fa-download"></i>
+    Baixar Retorno Simba
+  </button>
+  <button (click)="download(processo)" class="btn btn-primary" *ngIf="acao !== 'Incluir' && solic">
+    <i class="fas fa-download"></i>
+    Baixar Retorno Simba
+  </button>
+</div>
+<p *ngIf="isArquivo" class="text-center"><b>Arquivo Selecionado: </b>{{nomeArquivo}}</p>
+<hr>
+<div *ngIf="!solic" class="d-flex justify-content-end align-items-center">
+  <ul class="mr-2">
+    <li *ngIf="solicitacao?.situacaoSolicitacao.id !== 6 && isArquivo && !isDetalhamento" class="small colored-danger">Ao informar um novo arquivo, o arquivo atual será substituído</li>
+    <li class="small">¹ - Arquivo de retorno do SIMBA.</li>
+  </ul>
+  <button *ngIf="solicitacao?.situacaoSolicitacao.id === 6" (click)="salvar()" class="btn btn-primary">Salvar</button>
+  <button *ngIf="solicitacao?.situacaoSolicitacao.id !== 6 && !isDetalhamento" (click)="salvar()" class="btn btn-primary">Salvar</button>
+  <button *ngIf="isDetalhamento" (click)="alterar()" class="btn btn-primary">Alterar</button>
+  <button *ngIf="isDetalhamento" (click)="excluir(processo)" class="btn btn-danger">Excluir</button>
+</div>
+<div *ngIf="solic" class="d-flex justify-content-end align-items-center">
+  <ul class="mr-2">
+    <li *ngIf="isArquivo && !isDetalhamento" class="small colored-danger">Ao informar um novo arquivo, o arquivo atual será substituído</li>
+    <li class="small">¹ - Arquivo de retorno do SIMBA.</li>
+  </ul>
+  <button *ngIf="acao === 'Incluir'" (click)="salvarConsultaArquivo()" class="btn btn-primary">Salvar</button>
+  <button *ngIf="acao === 'Alterar'" (click)="alterarConsultaArquivo()" class="btn btn-primary">Salvar</button>
+</div>

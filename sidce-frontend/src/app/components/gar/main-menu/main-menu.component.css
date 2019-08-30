@@ -1,0 +1,115 @@
+:host() {
+    background-color: #0065B7;
+    background-image: linear-gradient(#0065B7, #0260AA);
+}
+
+.sidenav {
+    position: sticky;
+    top: 20px;
+}
+
+.toggle-button {
+    font-size: 1.8em;
+    color: #fff;
+    width: 100%;
+    cursor: pointer;
+    display: block;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+}
+
+.toggle-button:hover {
+    text-shadow: 0 0 5px #54bbab;
+}
+
+.menu {
+    position: sticky;
+    top: 0;
+    transition: all ease .3s;
+}
+
+.item {
+    font-size: 14px;
+    color: #fff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all ease .5s;
+}
+
+.item:hover {
+    background-color: #0065B7;
+    background-image: linear-gradient(to right,rgba(0,0,0,0),#54bbab);
+}
+
+.item:active,
+.item:focus {
+    text-decoration: none;
+}
+
+.item.disabled {
+    cursor: not-allowed;
+    background: none;
+    color: #aaa;
+}
+
+.item > .icon {
+    font-size: 1.5em;
+}
+
+.item > .text {
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+li .menu .item.comMargem {
+    padding-left: 40px;
+}
+
+li .menu .icon {
+    font-size: 1em;
+}
+
+.aberto,
+.fechado {
+    display: block;
+    overflow: hidden;
+    transition: all ease .5s;
+    width: auto;
+}
+
+.aberto {
+    opacity: 1;
+    max-width: 180px;
+}
+
+.fechado {
+    opacity: 0;
+    max-width: 0;
+}
+
+.sublist {
+    overflow: hidden;
+    height: auto;
+    transition: all ease 1s;
+    max-height: 300px;
+    background: rgba(0,0,0,.1);
+}
+
+.arrow-sub {
+    width: 12px;
+    transition: all ease .35s;
+}
+
+.virada {
+    transform: rotate(90deg);
+}
+
+.sublist:not(.isVisible) {
+    max-height: 0;
+    transition: all ease-out .5s;
+}
